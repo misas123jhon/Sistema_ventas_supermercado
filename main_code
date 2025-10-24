@@ -1,4 +1,5 @@
 # Se crea una lista de diccionarios para cada sección de un supermercado
+#hola
 productos = [
     # COMIDA
     {
