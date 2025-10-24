@@ -4,7 +4,7 @@ se realizo un programa el cual tiene varias funciones, ver inventarios, agregar 
 
 Sistema de stock y cajero de un supermercado
 integrantes
-Jhon Misas -
+Jhon Misas - 2220242047
 Carlos Montoya - 2220241041
 Enunciado
 Se crea un programa para computadora que cumpla varias funciones útiles en un supermercado,
