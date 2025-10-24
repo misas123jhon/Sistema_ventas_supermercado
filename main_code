@@ -1,0 +1,263 @@
+# Se crea una lista de diccionarios para cada sección de un supermercado
+productos = [
+    # COMIDA
+    {
+        "info_producto": ("ARROZ DIANA", "COMIDA", "1kg"),
+        "precios": {"costo": 2500, "venta": 3500},
+        "stock": {"cantidad": 50, "minimo": 10},
+        "categorias": {"comida"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("LECHE ALQUERIA", "COMIDA", "1L"),
+        "precios": {"costo": 2800, "venta": 3800},
+        "stock": {"cantidad": 30, "minimo": 5},
+        "categorias": {"comida"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("PAN BIMBO", "COMIDA", "600g"),
+        "precios": {"costo": 4500, "venta": 5500},
+        "stock": {"cantidad": 20, "minimo": 8},
+        "categorias": {"comida"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("HUEVOS AA", "COMIDA", "30 unidades"),
+        "precios": {"costo": 18000, "venta": 22000},
+        "stock": {"cantidad": 40, "minimo": 12},
+        "categorias": {"comida"},
+        "estado": "disponible"
+    },
+
+    # ASEO
+    {
+        "info_producto": ("JABON AXION", "ASEO", "500g"),
+        "precios": {"costo": 3200, "venta": 4500},
+        "stock": {"cantidad": 22, "minimo": 6},
+        "categorias": {"aseo"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("CREMA DENTAL COLGATE", "ASEO", "100ml"),
+        "precios": {"costo": 5800, "venta": 7500},
+        "stock": {"cantidad": 25, "minimo": 8},
+        "categorias": {"aseo"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("PAPEL HIGIENICO FAMILIA", "ASEO", "4 rollos"),
+        "precios": {"costo": 8500, "venta": 11000},
+        "stock": {"cantidad": 40, "minimo": 12},
+        "categorias": {"aseo"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("CLOROX", "ASEO", "1L"),
+        "precios": {"costo": 4500, "venta": 6000},
+        "stock": {"cantidad": 18, "minimo": 5},
+        "categorias": {"aseo"},
+        "estado": "disponible"
+    },
+
+    # FRUTAS
+    {
+        "info_producto": ("MANZANAS", "FRUTAS", "1kg"),
+        "precios": {"costo": 4500, "venta": 6500},
+        "stock": {"cantidad": 25, "minimo": 8},
+        "categorias": {"frutas"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("BANANOS", "FRUTAS", "1kg"),
+        "precios": {"costo": 2000, "venta": 3500},
+        "stock": {"cantidad": 30, "minimo": 10},
+        "categorias": {"frutas"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("NARANJAS", "FRUTAS", "1kg"),
+        "precios": {"costo": 3000, "venta": 4500},
+        "stock": {"cantidad": 20, "minimo": 6},
+        "categorias": {"frutas"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("FRESAS", "FRUTAS", "500g"),
+        "precios": {"costo": 4000, "venta": 6000},
+        "stock": {"cantidad": 15, "minimo": 5},
+        "categorias": {"frutas"},
+        "estado": "disponible"
+    },
+
+    # CARNES
+    {
+        "info_producto": ("LOMO DE CERDO", "CARNES", "1kg"),
+        "precios": {"costo": 12000, "venta": 15000},
+        "stock": {"cantidad": 10, "minimo": 3},
+        "categorias": {"carnes"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("SALCHICHAS ZENU", "CARNES", "500g"),
+        "precios": {"costo": 5800, "venta": 7200},
+        "stock": {"cantidad": 24, "minimo": 8},
+        "categorias": {"carnes"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("JAMON PIETRAN", "CARNES", "500g"),
+        "precios": {"costo": 6800, "venta": 8500},
+        "stock": {"cantidad": 16, "minimo": 5},
+        "categorias": {"carnes"},
+        "estado": "disponible"
+    },
+    {
+        "info_producto": ("TOCINETA", "CARNES", "500g"),
+        "precios": {"costo": 7500, "venta": 9500},
+        "stock": {"cantidad": 14, "minimo": 4},
+        "categorias": {"carnes"},
+        "estado": "disponible"
+    }
+]
+
+# SISTEMA DE CAJA
+sistema_caja = {
+    "caja_principal": {
+        "efectivo_inicial": 500000,
+        "efectivo_actual": 500000,
+        "ventas_efectivo": 0,
+        "ventas_banco": 0,
+        "estado": "activa"
+    },
+    "cuenta_banco": {
+        "saldo": 10000000,
+        "total_ventas_banco": 0
+    }
+}
+
+def crear_producto():
+  nombre= input("Ingrese el nombre del producto: ")
+  categoria= input("Ingrese la categoria del producto: ")
+  peso= input("Ingrese el peso del producto: ")
+  info_producto= (nombre, categoria, peso)
+
+  costo= int(input("Ingrese el costo del producto: "))
+  venta= int(input("Ingrese el valor de venta del producto: "))
+  precios= {"costo": costo, "venta": venta}
+
+  cantidad= int(input("Ingrese la cantidad del producto: "))
+  minimo= int(input("Ingrese la cantidad minima del producto: "))
+  stock= {"cantidad": cantidad, "minimo": minimo}
+
+  categoria = input("Ingrese la categoría del producto: ")
+  categorias = {categoria}
+
+  estado= input("Ingrese el estado del producto: disponible/no disponible ").lower()
+
+  nuevo_producto= dict(info_producto=info_producto, precios=precios, stock=stock, categorias=categorias, estado=estado)
+  productos.append(nuevo_producto)
+  print("Producto creado exitosamente")
+  return nuevo_producto
+
+
+  def ver_inventario():
+    for producto in productos:
+      if producto["estado"] == "disponible":
+          nombre,categoria,peso= producto["info_producto"]
+          costo= producto["precios"]["costo"]
+          venta= producto["precios"]["venta"]
+          minimo= producto["stock"]["cantidad"]
+          cantidad= producto["stock"]["minimo"]
+          categoria= producto["categorias"]
+          estado= producto["estado"]
+          print(f"Producto: Nombre: {nombre}, Categoria: {categoria}, Peso: {peso}")
+          print(f"Precios: Costo: {costo}, Venta: {venta}")
+          print(f"Stock: Cantidad: {cantidad}, Minimo: {minimo}")
+          print(f"Categoria: {categoria}")
+          print(f"Estado: {estado}\n")
+      else:
+        print("El producto no esta disponible")
+
+def actualizar_producto():
+    nombre_producto = input("Ingrese el nombre del producto que desea actualizar: ").upper()
+    for producto in productos:
+        nombre, categoria, presentacion = producto["info_producto"]
+        if nombre.upper() == nombre_producto:
+            print(f"\nProducto encontrado: {producto}\n")
+
+            # Pedimos los nuevos valores (si el usuario no escribe nada, se deja igual)
+            nuevo_costo = input("Nuevo costo (dejar vacío para no cambiar): ")
+            nuevo_precio_venta = input("Nuevo precio de venta (dejar vacío para no cambiar): ")
+            nueva_cantidad = input("Nueva cantidad en stock (dejar vacío para no cambiar): ")
+            nuevo_estado = input("Nuevo estado (dejar vacío para no cambiar): ")
+
+            # Actualizamos solo lo que el usuario cambie
+            if nuevo_costo:
+                producto["precios"]["costo"] = float(nuevo_costo)
+            if nuevo_precio_venta:
+                producto["precios"]["venta"] = float(nuevo_precio_venta)
+            if nueva_cantidad:
+                producto["stock"]["cantidad"] = int(nueva_cantidad)
+            if nuevo_estado:
+                producto["estado"] = nuevo_estado
+
+            print(f"\n Producto '{nombre}' actualizado correctamente.")
+            print(f"Nuevo estado del producto:\n{producto}\n")
+            break
+
+    else:
+        print(f"No se encontró el producto '{nombre_producto}'.")
+
+
+def eliminar_producto():
+    ID = input("Ingrese el ID: ")
+    nombre_producto = input("Nombre del producto: ")
+    if ID == "123": 
+      encontrado=False
+      for producto in productos:
+          nombre, categoria, peso = producto["info_producto"]
+          if nombre.upper() == nombre_producto.upper():
+              productos.remove(producto)
+              print(f"Producto {nombre} eliminado exitosamente.")
+              encontrado = True
+              break
+      if not encontrado:
+          print("Producto no encontrado.")
+    else:
+        print("ID inválido, intente de nuevo.")
+
+
+#MENU
+print("===" * 20)
+print("Menú gestión de productos")
+print("===" * 20)
+
+while True:
+  print(""" Opciones:
+  1. Crear producto
+  2. Ver inventario
+  3. Actualizar producto
+  4. Eliminar producto
+  5. Caja
+  6. Salir
+  """)
+
+  opcion = input("Ingrese acción deseada: ")
+
+  match opcion:
+    case "1":
+      print(crear_producto())
+    case "2":
+      print(ver_inventario())
+    case "3":
+      print(actualizar_producto())
+    case "4":
+      print(eliminar_producto())
+    case "5":
+      print()
+    case "6":
+      print("Saliendo, hasta luego.....")
+      break
+    case _:
+      print("Valor de acción no valido, intente nuevamente")
