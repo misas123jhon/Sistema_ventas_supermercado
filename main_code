@@ -1,5 +1,6 @@
-# Se crea una lista de diccionarios para cada sección de un supermercado
+from datetime import datetime
 
+# Se crea una lista de diccionarios para cada sección de un supermercado
 productos = [
     # COMIDA
     {
@@ -122,7 +123,7 @@ productos = [
     }
 ]
 
-# SISTEMA DE CAJA
+# SISTEMA DE CAJA (con historial de ventas)
 sistema_caja = {
     "caja_principal": {
         "efectivo_inicial": 500000,
@@ -134,51 +135,53 @@ sistema_caja = {
     "cuenta_banco": {
         "saldo": 10000000,
         "total_ventas_banco": 0
-    }
+    },
+    "historial_ventas": []  # aquí se guarda cada venta con su fecha
 }
 
 def crear_producto():
-  nombre= input("Ingrese el nombre del producto: ")
-  categoria= input("Ingrese la categoria del producto: ")
-  peso= input("Ingrese el peso del producto: ")
-  info_producto= (nombre, categoria, peso)
+    nombre = input("Ingrese el nombre del producto: ").upper()
+    categoria = input("Ingrese la categoria del producto: ").upper()
+    peso = input("Ingrese el peso del producto: ")
+    info_producto = (nombre, categoria, peso)
 
-  costo= int(input("Ingrese el costo del producto: "))
-  venta= int(input("Ingrese el valor de venta del producto: "))
-  precios= {"costo": costo, "venta": venta}
+    costo = int(input("Ingrese el costo del producto: "))
+    venta = int(input("Ingrese el valor de venta del producto: "))
+    precios = {"costo": costo, "venta": venta}
 
-  cantidad= int(input("Ingrese la cantidad del producto: "))
-  minimo= int(input("Ingrese la cantidad minima del producto: "))
-  stock= {"cantidad": cantidad, "minimo": minimo}
+    cantidad = int(input("Ingrese la cantidad del producto: "))
+    minimo = int(input("Ingrese la cantidad minima del producto: "))
+    stock = {"cantidad": cantidad, "minimo": minimo}
 
-  categoria = input("Ingrese la categoría del producto: ")
-  categorias = {categoria}
+    # se vuelve a pedir categoria para guardarlo en un set para una proxima actualizacion crear un apartado el cual
+    # muestre los productos por categorias.
+    categoria_set = input("Ingrese la categoría del producto (para el conjunto de categorias): ").lower()
+    categorias = {categoria_set}
 
-  estado= input("Ingrese el estado del producto: disponible/no disponible ").lower()
+    estado = input("Ingrese el estado del producto: disponible/no disponible ").lower()
 
-  nuevo_producto= dict(info_producto=info_producto, precios=precios, stock=stock, categorias=categorias, estado=estado)
-  productos.append(nuevo_producto)
-  print("Producto creado exitosamente")
-  return nuevo_producto
+    nuevo_producto = dict(info_producto=info_producto, precios=precios, stock=stock, categorias=categorias, estado=estado)
+    productos.append(nuevo_producto)
+    print("Producto creado exitosamente")
+    return nuevo_producto
 
-
-  def ver_inventario():
+def ver_inventario():
     for producto in productos:
-      if producto["estado"] == "disponible":
-          nombre,categoria,peso= producto["info_producto"]
-          costo= producto["precios"]["costo"]
-          venta= producto["precios"]["venta"]
-          minimo= producto["stock"]["cantidad"]
-          cantidad= producto["stock"]["minimo"]
-          categoria= producto["categorias"]
-          estado= producto["estado"]
-          print(f"Producto: Nombre: {nombre}, Categoria: {categoria}, Peso: {peso}")
-          print(f"Precios: Costo: {costo}, Venta: {venta}")
-          print(f"Stock: Cantidad: {cantidad}, Minimo: {minimo}")
-          print(f"Categoria: {categoria}")
-          print(f"Estado: {estado}\n")
-      else:
-        print("El producto no esta disponible")
+        if producto["estado"] == "disponible":
+            nombre, categoria, peso = producto["info_producto"]
+            costo = producto["precios"]["costo"]
+            venta = producto["precios"]["venta"]
+            cantidad = producto["stock"]["cantidad"]
+            minimo = producto["stock"]["minimo"]
+            categorias = producto["categorias"]
+            estado = producto["estado"]
+            print(f"Producto: Nombre: {nombre}, Categoria: {categoria}, Peso: {peso}")
+            print(f"Precios: Costo: {costo}, Venta: {venta}")
+            print(f"Stock: Cantidad: {cantidad}, Minimo: {minimo}")
+            print(f"Categorias: {categorias}")
+            print(f"Estado: {estado}\n")
+        else:
+            print("El producto no esta disponible")
 
 def actualizar_producto():
     nombre_producto = input("Ingrese el nombre del producto que desea actualizar: ").upper()
@@ -187,13 +190,13 @@ def actualizar_producto():
         if nombre.upper() == nombre_producto:
             print(f"\nProducto encontrado: {producto}\n")
 
-            # Pedimos los nuevos valores (si el usuario no escribe nada, se deja igual)
-            nuevo_costo = input("Nuevo costo (dejar vacío para no cambiar): ")
-            nuevo_precio_venta = input("Nuevo precio de venta (dejar vacío para no cambiar): ")
-            nueva_cantidad = input("Nueva cantidad en stock (dejar vacío para no cambiar): ")
-            nuevo_estado = input("Nuevo estado (dejar vacío para no cambiar): ")
+            # se piden los nuevos valores, si no cambian se deja vacio
+            nuevo_costo = input("Nuevo costo (presione enter para no cambiar): ")
+            nuevo_precio_venta = input("Nuevo precio de venta (presione enter para no cambiar): ")
+            nueva_cantidad = input("Nueva cantidad en stock (presione enter para no cambiar): ")
+            nuevo_estado = input("Nuevo estado (presione enter para no cambiar): ")
 
-            # Actualizamos solo lo que el usuario cambie
+            # se actualiza solo lo que el usuario halla cambiado
             if nuevo_costo:
                 producto["precios"]["costo"] = float(nuevo_costo)
             if nuevo_precio_venta:
@@ -210,32 +213,30 @@ def actualizar_producto():
     else:
         print(f"No se encontró el producto '{nombre_producto}'.")
 
-
 def eliminar_producto():
     ID = input("Ingrese el ID: ")
     nombre_producto = input("Nombre del producto: ")
-    if ID == "123": 
-      encontrado=False
-      for producto in productos:
-          nombre, categoria, peso = producto["info_producto"]
-          if nombre.upper() == nombre_producto.upper():
-              productos.remove(producto)
-              print(f"Producto {nombre} eliminado exitosamente.")
-              encontrado = True
-              break
-      if not encontrado:
-          print("Producto no encontrado.")
+    if ID == "123":
+        encontrado = False
+        for producto in productos:
+            nombre, categoria, peso = producto["info_producto"]
+            if nombre.upper() == nombre_producto.upper():
+                productos.remove(producto)
+                print(f"Producto {nombre} eliminado exitosamente.")
+                encontrado = True
+                break
+        if not encontrado:
+            print("Producto no encontrado.")
     else:
         print("ID inválido, intente de nuevo.")
 
-
-#MENU
+# MENU
 print("===" * 20)
 print("Menú gestión de productos")
 print("===" * 20)
 
 while True:
-  print(""" Opciones:
+    print(""" Opciones:
   1. Crear producto
   2. Ver inventario
   3. Actualizar producto
@@ -244,21 +245,121 @@ while True:
   6. Salir
   """)
 
-  opcion = input("Ingrese acción deseada: ")
+    opcion = input("Ingrese acción deseada: ")
 
-  match opcion:
-    case "1":
-      print(crear_producto())
-    case "2":
-      print(ver_inventario())
-    case "3":
-      print(actualizar_producto())
-    case "4":
-      print(eliminar_producto())
-    case "5":
-      print()
-    case "6":
-      print("Saliendo, hasta luego.....")
-      break
-    case _:
-      print("Valor de acción no valido, intente nuevamente")
+    match opcion:
+        case "1":
+            print(crear_producto())
+        case "2":
+            ver_inventario()
+        case "3":
+            actualizar_producto()
+        case "4":
+            eliminar_producto()
+        case "5":
+            # SISTEMA DE CAJA CON FECHA E HISTORIAL
+            print("\n=== SISTEMA DE CAJA ===")
+            while True:
+                print(f"""
+--- CAJA PRINCIPAL ---
+Efectivo inicial: {sistema_caja["caja_principal"]"'efectivo_inicial"]}
+Efectivo actual: {sistema_caja["caja_principal"]["efectivo_actual"]}
+Ventas en efectivo: {sistema_caja["caja_principal"]["ventas_efectivo"]}
+Ventas por banco: {sistema_caja["caja_principal"]["ventas_banco"]}
+Estado: {sistema_caja["caja_principal"]["estado"]}
+
+--- CUENTA BANCO ---
+Saldo: {sistema_caja["cuenta_banco"]["saldo"]}
+Total ventas por banco: {sistema_caja["cuenta_banco"]["total_ventas_banco"]}
+
+Opciones:
+1. Registrar venta en efectivo
+2. Registrar venta por banco
+3. Ver historial de ventas
+4. Cerrar caja 
+5. Volver al menú principal
+""")
+
+                opcion_caja = input("Seleccione una opción: ")
+                
+                match opcion:
+                    case "1":
+                    producto_vendido = input("Ingrese el nombre del producto vendido (opcional): ").upper()
+                    try:
+                        valor = float(input("Ingrese el valor de la venta en efectivo: "))
+                    except ValueError:
+                        print("Valor inválido. Operación cancelada.\n")
+                        continue
+
+                    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                    sistema_caja["caja_principal"]["ventas_efectivo"] += valor
+                    sistema_caja["caja_principal"]["efectivo_actual"] += valor
+
+                    # registro de venta con la fecha
+                    sistema_caja["historial_ventas"].append({
+                        "fecha": fecha,
+                        "tipo": "efectivo",
+                        "monto": valor,
+                        "producto": producto_vendido
+                    })
+
+                    print(f"Venta en efectivo de {valor} registrada ({fecha}).\n")
+
+                    case "2":
+                    producto_vendido = input("Ingrese el nombre del producto vendido (opcional): ").upper()
+                    try:
+                        valor = float(input("Ingrese el valor de la venta por banco: "))
+                    except ValueError:
+                        print("Valor inválido. Operación cancelada.\n")
+                        continue
+
+                    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                    sistema_caja["caja_principal"]["ventas_banco"] += valor
+                    sistema_caja["cuenta_banco"]["saldo"] += valor
+                    sistema_caja["cuenta_banco"]["total_ventas_banco"] += valor
+
+                    sistema_caja["historial_ventas"].append({
+                        "fecha": fecha,
+                        "tipo": "banco",
+                        "monto": valor,
+                        "producto": producto_vendido
+                    })
+
+                    print(f"Venta por banco de {valor} registrada ({fecha}).\n")
+
+                    case "3":
+                    print("\n=== HISTORIAL DE VENTAS ===")
+                    if not sistema_caja["historial_ventas"]:
+                        print("No hay ventas registradas.\n")
+                    else:
+                        for venta in sistema_caja["historial_ventas"]:
+                            prod = venta['producto'] if venta['producto'] else "SIN_PROD"
+                            print(f"{venta['fecha']} | {venta['tipo'].upper()} | {prod} | ${venta['monto']}")
+                        print()
+
+                    case "4":
+                    total_ventas = (sistema_caja['caja_principal']['ventas_efectivo'] +
+                                    sistema_caja['caja_principal']['ventas_banco'])
+                    print("\n=== RESUMEN DE CAJA ===")
+                    print(f"Efectivo inicial: {sistema_caja['caja_principal']['efectivo_inicial']}")
+                    print(f"Efectivo actual: {sistema_caja['caja_principal']['efectivo_actual']}")
+                    print(f"Ventas en efectivo: {sistema_caja['caja_principal']['ventas_efectivo']}")
+                    print(f"Ventas por banco: {sistema_caja['caja_principal']['ventas_banco']}")
+                    print(f"Total ventas: {total_ventas}")
+                    print(f"Saldo en banco: {sistema_caja['cuenta_banco']['saldo']}")
+                    print("Caja cerrada correctamente.\n")
+
+                    case "5":
+                    print("Volviendo al menú principal...\n")
+                    break
+
+                    case _:
+                    print("Opción no válida, intente nuevamente.\n")
+
+        case "6":
+            print("Saliendo, hasta luego.....")
+            break
+        case _:
+            print("Valor de acción no valido, intente nuevamente")
